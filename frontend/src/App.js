@@ -195,7 +195,8 @@ function App() {
             <div className="flex items-center space-x-4">
               <div className="text-right">
                 <p className="text-sm font-semibold text-gray-800">{user.name}</p>
-                <p className="text-xs text-gray-600">{user.roll_no} • Sem {user.semester}</p>
+                <p className="text-xs text-gray-600">{user.roll_no}</p>
+                <p className="text-xs text-blue-600 font-medium">Class {user.semester} • Section {user.section}</p>
               </div>
               <Button 
                 onClick={handleLogout}
