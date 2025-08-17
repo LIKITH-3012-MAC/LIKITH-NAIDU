@@ -138,7 +138,7 @@ function App() {
                   <Input
                     id="roll_no"
                     type="text"
-                    placeholder="e.g., 2473A31139"
+                    placeholder="e.g., 2473A31138, 2473A31139, 2473A31140..."
                     value={loginData.roll_no}
                     onChange={(e) => setLoginData({...loginData, roll_no: e.target.value})}
                     required
