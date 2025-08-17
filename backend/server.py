@@ -133,16 +133,39 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
 # Initialize with sample data
 @app.on_event("startup")
 async def startup_event():
-    # Create sample students
-    sample_users = [
-        {"roll_no": "2473A31139", "name": "Sample Student", "semester": "3", "section": "A", "role": "student"},
-        {"roll_no": "admin", "name": "Department Admin", "semester": "", "section": "", "role": "admin"}
-    ]
+    # Import student data
+    import sys
+    sys.path.append('/app')
+    from student_data import STUDENT_DATA, ADMIN_DATA
     
-    for user in sample_users:
-        existing = users_collection.find_one({"roll_no": user["roll_no"]})
+    # Clear existing users (optional - remove this line if you want to keep existing data)
+    # users_collection.delete_many({})
+    
+    # Create students from STUDENT_DATA
+    for roll_no, student_info in STUDENT_DATA.items():
+        existing = users_collection.find_one({"roll_no": roll_no})
         if not existing:
-            users_collection.insert_one(user)
+            student_data = {
+                "roll_no": roll_no,
+                "name": student_info["name"],
+                "semester": student_info["semester"],
+                "section": student_info["section"],
+                "role": "student"
+            }
+            users_collection.insert_one(student_data)
+    
+    # Create admin from ADMIN_DATA
+    for roll_no, admin_info in ADMIN_DATA.items():
+        existing = users_collection.find_one({"roll_no": roll_no})
+        if not existing:
+            admin_data = {
+                "roll_no": roll_no,
+                "name": admin_info["name"],
+                "semester": admin_info.get("semester", ""),
+                "section": admin_info.get("section", ""),
+                "role": admin_info.get("role", "admin")
+            }
+            users_collection.insert_one(admin_data)
     
     # Sample notices
     sample_notices = [
