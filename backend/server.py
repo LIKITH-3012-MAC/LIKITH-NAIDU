@@ -242,23 +242,8 @@ async def login(user_data: UserLogin):
     
     # Check if user exists in database
     user = users_collection.find_one({"roll_no": user_data.roll_no})
-    
-    # If user doesn't exist but roll number is valid pattern, create the user automatically
     if not user:
-        # Extract last 3 digits to determine some details
-        last_digits = user_data.roll_no[-3:]
-        
-        # Create new student user
-        new_user = {
-            "roll_no": user_data.roll_no,
-            "name": f"Student {last_digits}",  # Default name, can be updated later
-            "semester": "3",  # Default semester
-            "section": "A",   # Default section
-            "role": "student"
-        }
-        
-        users_collection.insert_one(new_user)
-        user = new_user
+        raise HTTPException(status_code=401, detail="Roll number not found. Contact admin.")
     
     # Generate JWT token
     token = create_jwt_token(user["roll_no"], user["role"])
