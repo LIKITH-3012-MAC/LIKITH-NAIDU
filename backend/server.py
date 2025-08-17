@@ -229,14 +229,36 @@ async def startup_event():
 # Auth endpoints
 @app.post("/api/auth/login")
 async def login(user_data: UserLogin):
-    # Check if user exists
-    user = users_collection.find_one({"roll_no": user_data.roll_no})
-    if not user:
-        raise HTTPException(status_code=401, detail="Invalid roll number")
+    import re
     
     # Check if password matches roll number
     if user_data.password != user_data.roll_no:
         raise HTTPException(status_code=401, detail="Invalid password")
+    
+    # Check if roll number matches the pattern 2473A31XXX (where XXX is any 3 digits)
+    roll_pattern = r"^2473A31\d{3}$"
+    if not re.match(roll_pattern, user_data.roll_no):
+        raise HTTPException(status_code=401, detail="Invalid roll number format")
+    
+    # Check if user exists in database
+    user = users_collection.find_one({"roll_no": user_data.roll_no})
+    
+    # If user doesn't exist but roll number is valid pattern, create the user automatically
+    if not user:
+        # Extract last 3 digits to determine some details
+        last_digits = user_data.roll_no[-3:]
+        
+        # Create new student user
+        new_user = {
+            "roll_no": user_data.roll_no,
+            "name": f"Student {last_digits}",  # Default name, can be updated later
+            "semester": "3",  # Default semester
+            "section": "A",   # Default section
+            "role": "student"
+        }
+        
+        users_collection.insert_one(new_user)
+        user = new_user
     
     # Generate JWT token
     token = create_jwt_token(user["roll_no"], user["role"])
