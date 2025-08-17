@@ -245,7 +245,11 @@ function App() {
           <TabsContent value="home" className="space-y-6">
             <div className="text-center py-8">
               <h2 className="text-3xl font-bold text-gray-800 mb-2">Welcome back, {user.name}!</h2>
-              <p className="text-gray-600">Stay updated with department activities and academics</p>
+              <div className="text-gray-600 space-y-1">
+                <p className="text-lg">Roll Number: <span className="font-semibold text-blue-600">{user.roll_no}</span></p>
+                <p className="text-lg">Class: <span className="font-semibold text-blue-600">{user.semester}</span> • Section: <span className="font-semibold text-blue-600">{user.section}</span></p>
+                <p className="text-sm mt-3">Stay updated with department activities and academics</p>
+              </div>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
