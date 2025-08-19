@@ -5,22 +5,22 @@
 STUDENT_DATA = {
     "2473A31139": {
         "name": "LIKITH NAIDU",
-        "semester": "3",
+        "semester": "SEM-3",
         "section": "FIRE FLIES"
     },
     "2473A31175": {
         "name": "RAKESH ANNAVARAPU",
-        "semester": "3",
+        "semester": "SEM-3",
         "section": "FIRE FLIES"
     },
     "2473A31163": {
         "name": "Sk.liyakthali",
-        "semester": "3",
+        "semester": "SEM-3",
         "section": "FIRE FLIES"
     },
     "2473A31153": {
         "name": "AKHIL.CR",
-        "semester": "3",
+        "semester": "SEM-3",
         "section": "FIRE FLIES"
     }
 }
